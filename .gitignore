@@ -1,0 +1,143 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+*.xcconfig
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+.vscode/
+.vscode/settings.json
+.vscode/extensions.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+pubspec.lock
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/app/.gradle
+/android/.gradle
+/android/gradlew
+/android/gradlew.bat
+/android/gradle/
+/android/local.properties
+/android/key.properties
+
+# iOS/macOS
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/Flutter/Flutter.framework
+**/ios/**/Flutter/Flutter.podspec
+**/ios/**/Flutter/Flutter.xcframework
+**/ios/**/Flutter/GeneratedPluginRegistrant.swift
+**/ios/**/GeneratedPluginRegistrant.swift
+**/ios/**/xcuserdata/
+**/ios/**/project.pbxproj
+**/ios/**/project.xcworkspace/
+**/ios/**/.flutter-plugins*
+**/ios/**/Podfile
+**/ios/**/Podfile.lock
+**/ios/**/Manifest.lock
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/flutter_export_environment.sh
+**/macos/Pods/
+
+# Linux
+linux/flutter/generated_plugins.cmake
+linux/flutter/generated_plugin_registrant.cc
+linux/flutter/flutter_linux/
+
+# Web
+lib/generated_plugin_registrant.dart
+
+# Windows
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugins.cmake
+windows/flutter/generated_app.exe.manifest
+windows/app/build/
+windows/flutter/flutter_export_environment.sh
+
+# Coverage
+coverage/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.example
+
+# Generated files
+lib/config/generated/
+lib/generated/
+
+# Local history of file edits
+.history
+.local
+
+# Backup and temporary files
+*.backup
+*.bak
+*~
+*.tmp
+*.temp
+
+# OS specific files
+Thumbs.db
+.directory
+
+# Run configuration
+run_configuration.dart
