@@ -2,7 +2,7 @@
 
 ## ¿QUÉ SE HA HECHO?
 
-Se ha creado una **aplicación Flutter completa y profesional** que funciona como **Iriun Cam** - convirtiendo tu celular en una webcam virtual para usar con OBS, Windows o cualquier aplicación que soporte WebRTC.
+Se ha creado una **aplicación Flutter completa y profesional** que convierte tu celular en una webcam virtual para usar con OBS, Windows o cualquier aplicación que soporte WebRTC.
 
 ---
 

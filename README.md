@@ -2,7 +2,7 @@
 
 # Camera Streamer - Convierte tu celular en WebCam
 
-Una aplicación completa similar a **Iriun Cam** que transforma tu dispositivo móvil en una cámara virtual WebRTC. Compatible con OBS, Windows, y cualquier aplicación que soporte webcam virtual.
+Una aplicación completa que transforma tu dispositivo móvil en una cámara virtual WebRTC. Compatible con OBS, Windows, y cualquier aplicación que soporte webcam virtual.
 
 ## 📱 Características Principales
 
@@ -259,7 +259,6 @@ MIT License - Ver LICENSE para detalles
 - Flutter team por el excelente framework
 - WebRTC community
 - Socket.IO by @socketio
-- Inspiración en Iriun Cam
 
 ---
 

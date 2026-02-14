@@ -9,7 +9,6 @@
 📱 TIPO DE APLICACIÓN
 ═══════════════════════════════════════════════════════════════════════════════
   Aplicación Flutter multiplataforma (Android, iOS, Windows, macOS, Linux)
-  Similar a: Iriun Cam
   Tecnología: Flutter + Dart + WebRTC + Socket.IO
 
 🎯 FUNCIONALIDAD PRINCIPAL

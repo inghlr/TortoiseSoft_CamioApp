@@ -2,7 +2,7 @@
 
 ## ✅ Proyecto Completado
 
-Se ha implementado exitosamente una **aplicación Flutter completa** similar a **Iriun Cam** que transforma tu celular en una webcam virtual.
+Se ha implementado exitosamente una **aplicación Flutter completa** que transforma tu celular en una webcam virtual.
 
 ---
 
