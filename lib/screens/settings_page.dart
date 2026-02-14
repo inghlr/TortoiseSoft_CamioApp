@@ -1,0 +1,250 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/app_config.dart';
+import '../providers/camera_provider.dart';
+
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  late TextEditingController _deviceNameController;
+  late TextEditingController _ipController;
+  late TextEditingController _portController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = context.read<CameraProvider>();
+    _deviceNameController = TextEditingController(
+      text: provider.config.deviceName,
+    );
+    _ipController = TextEditingController(
+      text: provider.config.serverIp,
+    );
+    _portController = TextEditingController(
+      text: provider.config.serverPort.toString(),
+    );
+    _passwordController = TextEditingController(
+      text: provider.config.customPassword ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _deviceNameController.dispose();
+    _ipController.dispose();
+    _portController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: Consumer<CameraProvider>(
+        builder: (context, provider, _) {
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // Device name
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Device Information',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _deviceNameController,
+                        decoration: InputDecoration(
+                          labelText: 'Device Name',
+                          border: OutlineInputBorder(),
+                          hintText: 'e.g., My Phone Camera',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Server configuration
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Server Connection',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _ipController,
+                        decoration: InputDecoration(
+                          labelText: 'Server IP',
+                          border: OutlineInputBorder(),
+                          hintText: '192.168.1.100',
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _portController,
+                        decoration: InputDecoration(
+                          labelText: 'Port',
+                          border: OutlineInputBorder(),
+                          hintText: '8080',
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      const SizedBox(height: 12),
+                      CheckboxListTile(
+                        title: const Text('Use Secure Connection (HTTPS)'),
+                        value: provider.config.useSecureConnection,
+                        onChanged: (value) {
+                          provider.config.useSecureConnection = value ?? true;
+                          setState(() {});
+                        },
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: 'Password (Optional)',
+                          border: OutlineInputBorder(),
+                          hintText: 'Leave empty if not required',
+                        ),
+                        obscureText: true,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Camera settings
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Camera Settings',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 16),
+                      // Resolution dropdown
+                      Text(
+                        'Resolution',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      DropdownButton<int>(
+                        isExpanded: true,
+                        value: provider.config.selectedResolutionIndex,
+                        items: List.generate(
+                          cameraResolutions.length,
+                          (index) => DropdownMenuItem(
+                            value: index,
+                            child: Text(cameraResolutions[index].name),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          if (value != null) {
+                            provider.updateResolution(value);
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // FPS dropdown
+                      Text(
+                        'Frame Rate',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      DropdownButton<int>(
+                        isExpanded: true,
+                        value: provider.config.selectedFpsIndex,
+                        items: List.generate(
+                          cameraFps.length,
+                          (index) => DropdownMenuItem(
+                            value: index,
+                            child: Text(cameraFps[index].label),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          if (value != null) {
+                            provider.updateFps(value);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Save button
+              ElevatedButton(
+                onPressed: () {
+                  final newConfig = AppConfig(
+                    serverIp: _ipController.text,
+                    serverPort: int.tryParse(_portController.text) ?? 8080,
+                    deviceName: _deviceNameController.text,
+                    selectedCameraIndex:
+                        provider.config.selectedCameraIndex,
+                    selectedResolutionIndex:
+                        provider.config.selectedResolutionIndex,
+                    selectedFpsIndex: provider.config.selectedFpsIndex,
+                    useSecureConnection:
+                        provider.config.useSecureConnection,
+                    customPassword: _passwordController.text.isEmpty
+                        ? null
+                        : _passwordController.text,
+                  );
+
+                  provider.updateConfig(newConfig);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Settings saved!'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  backgroundColor: Colors.green,
+                ),
+                child: const Text(
+                  'Save Settings',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
