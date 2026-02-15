@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/app_config.dart';
+import '../models/enum/resolution_type.dart';
+import '../models/enum/fps_type.dart';
 import '../services/camera_service.dart';
 import '../services/config_service.dart';
 import '../services/socket_service.dart';
@@ -49,10 +51,11 @@ class CameraProvider extends ChangeNotifier {
       _statusMessage = 'Starting camera...';
       notifyListeners();
 
-      final resolution = cameraResolutions[_config.selectedResolutionIndex];
-      final fps = cameraFps[_config.selectedFpsIndex].fps;
+      final width = _config.selectedResolution.width;
+      final height = _config.selectedResolution.height;
+      final fps = _config.selectedFps.fps;
 
-      await cameraService.startCameraStream(resolution, fps);
+      await cameraService.startCameraStream(width, height, fps);
 
       // Conectar a socket
       _statusMessage = 'Connecting to server...';
@@ -115,13 +118,13 @@ class CameraProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateResolution(int index) {
-    _config.selectedResolutionIndex = index;
+  void updateResolution(ResolutionType resolution) {
+    _config.selectedResolution = resolution;
     notifyListeners();
   }
 
-  void updateFps(int index) {
-    _config.selectedFpsIndex = index;
+  void updateFps(FpsType fps) {
+    _config.selectedFps = fps;
     notifyListeners();
   }
 

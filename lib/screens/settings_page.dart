@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/app_config.dart';
+import '../models/enum/resolution_type.dart';
+import '../models/enum/fps_type.dart';
 import '../providers/camera_provider.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -154,16 +156,17 @@ class _SettingsPageState extends State<SettingsPage> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 8),
-                      DropdownButton<int>(
+                      DropdownButton<ResolutionType>(
                         isExpanded: true,
-                        value: provider.config.selectedResolutionIndex,
-                        items: List.generate(
-                          cameraResolutions.length,
-                          (index) => DropdownMenuItem(
-                            value: index,
-                            child: Text(cameraResolutions[index].name),
-                          ),
-                        ),
+                        value: provider.config.selectedResolution,
+                        items: ResolutionType.values
+                            .map(
+                              (resolution) => DropdownMenuItem(
+                                value: resolution,
+                                child: Text(resolution.name),
+                              ),
+                            )
+                            .toList(),
                         onChanged: (value) {
                           if (value != null) {
                             provider.updateResolution(value);
@@ -177,16 +180,17 @@ class _SettingsPageState extends State<SettingsPage> {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 8),
-                      DropdownButton<int>(
+                      DropdownButton<FpsType>(
                         isExpanded: true,
-                        value: provider.config.selectedFpsIndex,
-                        items: List.generate(
-                          cameraFps.length,
-                          (index) => DropdownMenuItem(
-                            value: index,
-                            child: Text(cameraFps[index].label),
-                          ),
-                        ),
+                        value: provider.config.selectedFps,
+                        items: FpsType.values
+                            .map(
+                              (fps) => DropdownMenuItem(
+                                value: fps,
+                                child: Text(fps.label),
+                              ),
+                            )
+                            .toList(),
                         onChanged: (value) {
                           if (value != null) {
                             provider.updateFps(value);
@@ -206,11 +210,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     serverIp: _ipController.text,
                     serverPort: int.tryParse(_portController.text) ?? 8080,
                     deviceName: _deviceNameController.text,
-                    selectedCameraIndex:
-                        provider.config.selectedCameraIndex,
-                    selectedResolutionIndex:
-                        provider.config.selectedResolutionIndex,
-                    selectedFpsIndex: provider.config.selectedFpsIndex,
+                    selectedCamera: provider.config.selectedCamera,
+                    selectedResolution:
+                        provider.config.selectedResolution,
+                    selectedFps: provider.config.selectedFps,
                     useSecureConnection:
                         provider.config.useSecureConnection,
                     customPassword: _passwordController.text.isEmpty

@@ -1,6 +1,5 @@
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../models/app_config.dart';
 
 class CameraService {
   MediaStream? _localStream;
@@ -16,7 +15,8 @@ class CameraService {
   }
 
   Future<void> startCameraStream(
-    CameraResolution resolution,
+    int width,
+    int height,
     int fps, {
     bool useFrontCamera = true,
   }) async {
@@ -36,8 +36,8 @@ class CameraService {
         'audio': false,
         'video': {
           'facingMode': useFrontCamera ? 'user' : 'environment',
-          'width': {'ideal': resolution.width},
-          'height': {'ideal': resolution.height},
+          'width': {'ideal': width},
+          'height': {'ideal': height},
           'frameRate': {'ideal': fps},
         }
       };

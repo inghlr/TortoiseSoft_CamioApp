@@ -1,3 +1,5 @@
+import 'package:flutter_caminout_app/models/enum/fps_type.dart';
+import 'package:flutter_caminout_app/models/enum/resolution_type.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_caminout_app/main.dart';
 import 'package:flutter_caminout_app/models/app_config.dart';
@@ -38,29 +40,28 @@ void main() {
 
     // Tests para CameraResolution
     group('Camera Resolution', () {
-      test('should have correct resolution models', () {
-        expect(cameraResolutions.length, 4);
-        expect(cameraResolutions[0].name, 'QVGA (320x240)');
-        expect(cameraResolutions[1].name, 'VGA (640x480)');
-        expect(cameraResolutions[2].name, 'HD (1280x720)');
-        expect(cameraResolutions[3].name, 'Full HD (1920x1080)');
+      test('should have correct resolution enums', () {
+        expect(ResolutionType.values.length, 4);
+        expect(ResolutionType.qvga.name, 'QVGA (320x240)');
+        expect(ResolutionType.vga.name, 'VGA (640x480)');
+        expect(ResolutionType.hd.name, 'HD (1280x720)');
+        expect(ResolutionType.fullHd.name, 'Full HD (1920x1080)');
       });
 
       test('HD resolution should have correct dimensions', () {
-        final hdResolution = cameraResolutions[2];
-        expect(hdResolution.width, 1280);
-        expect(hdResolution.height, 720);
+        expect(ResolutionType.hd.width, 1280);
+        expect(ResolutionType.hd.height, 720);
       });
     });
 
-    // Tests para CameraFps
+    // Tests para Camera FPS
     group('Camera FPS', () {
-      test('should have correct FPS models', () {
-        expect(cameraFps.length, 4);
-        expect(cameraFps[0].fps, 15);
-        expect(cameraFps[1].fps, 24);
-        expect(cameraFps[2].fps, 30);
-        expect(cameraFps[3].fps, 60);
+      test('should have correct FPS enums', () {
+        expect(FpsType.values.length, 4);
+        expect(FpsType.fps15.fps, 15);
+        expect(FpsType.fps24.fps, 24);
+        expect(FpsType.fps30.fps, 30);
+        expect(FpsType.fps60.fps, 60);
       });
     });
 
@@ -132,13 +133,13 @@ void main() {
       });
 
       test('CameraProvider should update resolution', () {
-        cameraProvider.updateResolution(2); // HD
-        expect(cameraProvider.config.selectedResolutionIndex, 2);
+        cameraProvider.updateResolution(ResolutionType.hd);
+        expect(cameraProvider.config.selectedResolution, ResolutionType.hd);
       });
 
       test('CameraProvider should update FPS', () {
-        cameraProvider.updateFps(3); // 60 FPS
-        expect(cameraProvider.config.selectedFpsIndex, 3);
+        cameraProvider.updateFps(FpsType.fps60);
+        expect(cameraProvider.config.selectedFps, FpsType.fps60);
       });
 
       tearDown(() async {

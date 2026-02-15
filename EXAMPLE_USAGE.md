@@ -117,8 +117,8 @@ final newConfig = AppConfig(
   serverIp: '192.168.0.50',
   serverPort: 9000,
   deviceName: 'My Android Phone',
-  selectedResolutionIndex: 2, // HD
-  selectedFpsIndex: 2,        // 30 FPS
+  selectedResolution: ResolutionType.hd,    // HD
+  selectedFps: FpsType.fps30,                // 30 FPS
   useSecureConnection: true,
 );
 
@@ -169,8 +169,8 @@ final config = cameraProvider.config;
 print('Nombre: ${config.deviceName}');
 print('IP: ${config.serverIp}');
 print('Puerto: ${config.serverPort}');
-print('Resolución: ${cameraResolutions[config.selectedResolutionIndex].name}');
-print('FPS: ${cameraFps[config.selectedFpsIndex].label}');
+print('Resolución: ${config.selectedResolution.name}');
+print('FPS: ${config.selectedFps.label}');
 print('Seguro: ${config.useSecureConnection}');
 ```
 
