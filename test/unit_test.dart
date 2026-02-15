@@ -6,6 +6,7 @@ import 'package:flutter_caminout_app/models/app_config.dart';
 import 'package:flutter_caminout_app/services/camera_service.dart';
 import 'package:flutter_caminout_app/services/config_service.dart';
 import 'package:flutter_caminout_app/services/socket_service.dart';
+import 'package:flutter_caminout_app/services/theme_service.dart';
 import 'package:flutter_caminout_app/providers/camera_provider.dart';
 
 void main() {
@@ -152,7 +153,8 @@ void main() {
     testWidgets(
       'CameraStreamerApp should render without errors',
       (WidgetTester tester) async {
-        await tester.pumpWidget(const CameraStreamerApp());
+        final themeService = ThemeService();
+        await tester.pumpWidget(CameraStreamerApp(themeService: themeService));
         expect(find.byType(CameraStreamerApp), findsOneWidget);
       },
     );

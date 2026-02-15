@@ -144,7 +144,7 @@ class CameraStreamPage extends StatelessWidget {
               // Status message overlay
               if (!provider.isStreaming && provider.statusMessage.isNotEmpty)
                 Positioned(
-                  top: 16,
+                  top: 80,
                   left: 16,
                   right: 16,
                   child: Container(
@@ -163,10 +163,141 @@ class CameraStreamPage extends StatelessWidget {
                     ),
                   ),
                 ),
+              // Network info panel
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.link,
+                        size: 14,
+                        color: Colors.green[300],
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'wss://${provider.localIp}:${provider.config.serverPort}',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 13,
+                          fontFamily: 'monospace',
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.grey[900],
+                                title: Text(
+                                  'Información de Conexión',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildInfoRow('IP', provider.localIp),
+                                    const SizedBox(height: 12),
+                                    _buildInfoRow('Puerto', provider.config.serverPort.toString()),
+                                    const SizedBox(height: 12),
+                                    _buildInfoRow('URL WSS', 'wss://${provider.localIp}:${provider.config.serverPort}'),
+                                    const SizedBox(height: 16),
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue[900]?.withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(4),
+                                        border: Border.all(color: Colors.blue[300]!, width: 0.5),
+                                      ),
+                                      child: Text(
+                                        'Usa esta información para conectar desde OBS o tu PC.',
+                                        style: TextStyle(
+                                          color: Colors.white.withOpacity(0.7),
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text(
+                                      'Cerrar',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Icon(
+                          Icons.info_outline,
+                          size: 16,
+                          color: Colors.blue[300],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           );
         },
       ),
+    );
+  }
+
+  /// Widget helper para mostrar filas de información en el dialog
+  Widget _buildInfoRow(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.blue[300],
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: Colors.white.withOpacity(0.1)),
+          ),
+          child: SelectableText(
+            value,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.9),
+              fontSize: 14,
+              fontFamily: 'monospace',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

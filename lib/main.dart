@@ -1,29 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/camera_provider.dart';
+import 'providers/theme_provider.dart';
 import 'screens/camera_stream_page.dart';
 import 'screens/settings_page.dart';
 import 'services/camera_service.dart';
 import 'services/config_service.dart';
 import 'services/socket_service.dart';
+import 'services/theme_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const CameraStreamerApp());
+  final themeService = ThemeService();
+  await themeService.init();
+  runApp(CameraStreamerApp(themeService: themeService));
 }
 
 class CameraStreamerApp extends StatelessWidget {
-  const CameraStreamerApp({Key? key}) : super(key: key);
+  final ThemeService themeService;
+
+  const CameraStreamerApp({
+    Key? key,
+    required this.themeService,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Camera Streamer',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (_) => ThemeProvider(themeService: themeService),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, _) {
+          return MaterialApp(
+            title: 'Camera Streamer',
+            debugShowCheckedModeBanner: false,
+            themeMode: themeProvider.themeMode,
+            theme: ThemeData(
+              brightness: Brightness.light,
+              primarySwatch: Colors.blue,
+              useMaterial3: true,
+              appBarTheme: AppBarTheme(
+                backgroundColor: Colors.blue[400],
+                elevation: 0,
+              ),
+            ),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: Colors.blue,
+              useMaterial3: true,
+              scaffoldBackgroundColor: const Color(0xFF121212),
+              appBarTheme: AppBarTheme(
+                backgroundColor: Colors.grey[900],
+                elevation: 0,
+              ),
+              cardColor: Colors.grey[800],
+            ),
+            home: const AppInitializer(),
+          );
+        },
       ),
-      home: const AppInitializer(),
     );
   }
 }

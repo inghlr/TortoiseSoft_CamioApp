@@ -5,21 +5,25 @@ import '../models/enum/fps_type.dart';
 import '../services/camera_service.dart';
 import '../services/config_service.dart';
 import '../services/socket_service.dart';
+import '../services/network_service.dart';
 
 class CameraProvider extends ChangeNotifier {
   final CameraService cameraService;
   final ConfigService configService;
   final SocketService socketService;
+  final NetworkService networkService = NetworkService();
 
   AppConfig _config = AppConfig();
   bool _isStreaming = false;
   String _statusMessage = 'Ready';
   bool _isLoading = false;
+  String _localIp = 'Loading...';
 
   AppConfig get config => _config;
   bool get isStreaming => _isStreaming;
   String get statusMessage => _statusMessage;
   bool get isLoading => _isLoading;
+  String get localIp => _localIp;
 
   CameraProvider({
     required this.cameraService,
@@ -34,6 +38,9 @@ class CameraProvider extends ChangeNotifier {
 
       await cameraService.initRenderer();
       _config = await configService.getConfig();
+
+      // Obtener la IP local del dispositivo
+      _localIp = await networkService.getLocalIp();
 
       _statusMessage = 'Initialized';
       _isLoading = false;

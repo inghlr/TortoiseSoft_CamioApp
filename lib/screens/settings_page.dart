@@ -4,6 +4,7 @@ import '../models/app_config.dart';
 import '../models/enum/resolution_type.dart';
 import '../models/enum/fps_type.dart';
 import '../providers/camera_provider.dart';
+import '../providers/theme_provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -201,9 +202,105 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
 
-              // Save button
+              // Theme settings
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Appearance',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 16),
+                      Consumer<ThemeProvider>(
+                        builder: (context, themeProvider, _) {
+                          return Column(
+                            children: [
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: const Text('Dark Mode'),
+                                subtitle: Text(
+                                  _getThemeModeLabel(themeProvider.themeMode),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color,
+                                  ),
+                                ),
+                                trailing: PopupMenuButton<ThemeMode>(
+                                  onSelected: (mode) {
+                                    themeProvider.setThemeMode(mode);
+                                  },
+                                  itemBuilder: (BuildContext context) => [
+                                    PopupMenuItem(
+                                      value: ThemeMode.system,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.brightness_auto,
+                                            size: 20,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.system
+                                                ? Colors.blue
+                                                : null,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          const Text('System'),
+                                        ],
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: ThemeMode.light,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.brightness_7,
+                                            size: 20,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.light
+                                                ? Colors.blue
+                                                : null,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          const Text('Light'),
+                                        ],
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: ThemeMode.dark,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.brightness_4,
+                                            size: 20,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.blue
+                                                : null,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          const Text('Dark'),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   final newConfig = AppConfig(
@@ -249,5 +346,17 @@ class _SettingsPageState extends State<SettingsPage> {
         },
       ),
     );
+  }
+
+  /// Helper para obtener la etiqueta del modo de tema
+  String _getThemeModeLabel(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.system:
+        return 'Usar configuración del sistema';
+      case ThemeMode.light:
+        return 'Tema claro';
+      case ThemeMode.dark:
+        return 'Tema oscuro';
+    }
   }
 }

@@ -7,13 +7,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_caminout_app/main.dart';
+import 'package:flutter_caminout_app/services/theme_service.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const CameraStreamerApp());
+    final themeService = ThemeService();
+    await tester.pumpWidget(CameraStreamerApp(themeService: themeService));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
