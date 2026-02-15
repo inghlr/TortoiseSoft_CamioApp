@@ -170,7 +170,7 @@ class CameraStreamPage extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.4),
+                    color: Colors.black.withAlpha((0.4 * 255).round()),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Row(
@@ -185,7 +185,7 @@ class CameraStreamPage extends StatelessWidget {
                       Text(
                         'wss://${provider.localIp}:${provider.config.serverPort}',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withAlpha((0.9 * 255).round()),
                           fontSize: 13,
                           fontFamily: 'monospace',
                           fontWeight: FontWeight.w500,
@@ -221,14 +221,14 @@ class CameraStreamPage extends StatelessWidget {
                                     Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: Colors.blue[900]?.withOpacity(0.3),
+                                        color: Colors.blue[900]?.withAlpha((0.3 * 255).round()),
                                         borderRadius: BorderRadius.circular(4),
                                         border: Border.all(color: Colors.blue[300]!, width: 0.5),
                                       ),
                                       child: Text(
                                         'Usa esta información para conectar desde OBS o tu PC.',
                                         style: TextStyle(
-                                          color: Colors.white.withOpacity(0.7),
+                                          color: Colors.white.withAlpha((0.7 * 255).round()),
                                           fontSize: 13,
                                         ),
                                       ),
@@ -283,14 +283,14 @@ class CameraStreamPage extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withAlpha((0.3 * 255).round()),
             borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: Colors.white.withOpacity(0.1)),
+            border: Border.all(color: Colors.white.withAlpha((0.1 * 255).round())),
           ),
           child: SelectableText(
             value,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withAlpha((0.9 * 255).round()),
               fontSize: 14,
               fontFamily: 'monospace',
               fontWeight: FontWeight.w500,
