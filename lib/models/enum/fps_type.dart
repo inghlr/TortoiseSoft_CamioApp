@@ -1,4 +1,4 @@
-/// Enumerador para tipos de FPS
+/// Enum for FPS types
 enum FpsType {
   fps15(15, '15 FPS'),
   fps24(24, '24 FPS'),

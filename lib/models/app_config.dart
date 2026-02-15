@@ -2,7 +2,7 @@ import 'enum/camera_type.dart';
 import 'enum/resolution_type.dart';
 import 'enum/fps_type.dart';
 
-/// Modelo para la configuración de la aplicación
+/// Model for application configuration
 class AppConfig {
   String serverIp;
   int serverPort;

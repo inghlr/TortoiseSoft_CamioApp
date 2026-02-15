@@ -265,7 +265,7 @@ class CameraStreamPage extends StatelessWidget {
     );
   }
 
-  /// Widget helper para mostrar filas de información en el dialog
+  /// Helper widget to display information rows in the dialog
   Widget _buildInfoRow(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

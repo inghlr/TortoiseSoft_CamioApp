@@ -9,15 +9,15 @@ class NetworkService {
 
   NetworkService._internal();
 
-  /// Obtiene la dirección IP local del dispositivo
+  /// Gets the local IP address of the device
   Future<String> getLocalIp() async {
     try {
-      // Obtener todas las interfaces de red
+      // Get all network interfaces
       final interfaces = await NetworkInterface.list();
 
       for (var interface in interfaces) {
         for (var address in interface.addresses) {
-          // Preferir IPv4 y excluir localhost
+          // Prefer IPv4 and exclude localhost
           if (address.type == InternetAddressType.IPv4 &&
               !address.address.startsWith('127.')) {
             return address.address;
@@ -31,7 +31,7 @@ class NetworkService {
     }
   }
 
-  /// Obtiene información de red formateada
+  /// Gets formatted network information
   Future<String> getNetworkInfo(String port) async {
     final ip = await getLocalIp();
     return 'wss://$ip:$port';

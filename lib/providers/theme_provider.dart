@@ -12,26 +12,26 @@ class ThemeProvider extends ChangeNotifier {
     _themeMode = themeService.getThemeMode();
   }
 
-  /// Cambia el modo de tema
+  /// Changes the theme mode
   Future<void> setThemeMode(ThemeMode mode) async {
     _themeMode = mode;
     await themeService.setThemeMode(mode);
     notifyListeners();
   }
 
-  /// Alterna entre claro y oscuro
+  /// Toggles between light and dark
   Future<void> toggleTheme() async {
     if (_themeMode == ThemeMode.dark) {
       await setThemeMode(ThemeMode.light);
     } else if (_themeMode == ThemeMode.light) {
       await setThemeMode(ThemeMode.dark);
     } else {
-      // Si está en system, cambiar a oscuro
+      // If it's in system mode, change to dark
       await setThemeMode(ThemeMode.dark);
     }
   }
 
-  /// Restaura el tema al sistema
+  /// Restores the theme to system
   Future<void> resetToSystemTheme() async {
     await setThemeMode(ThemeMode.system);
   }

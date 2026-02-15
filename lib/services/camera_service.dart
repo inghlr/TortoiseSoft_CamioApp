@@ -21,7 +21,7 @@ class CameraService {
     bool useFrontCamera = true,
   }) async {
     try {
-      // Solicitar permisos de cámara y micrófono
+      // Request camera and microphone permissions
       final cameraStatus = await Permission.camera.request();
       final audioStatus = await Permission.microphone.request();
 
@@ -46,7 +46,7 @@ class CameraService {
           await navigator.mediaDevices.getUserMedia(mediaConstraints);
       localRenderer.srcObject = _localStream;
 
-      // Configuración de PeerConnection
+      // PeerConnection configuration
       final configuration = {
         'iceServers': [
           {'urls': 'stun:stun.l.google.com:19302'},
@@ -56,7 +56,7 @@ class CameraService {
 
       _peerConnection = await createPeerConnection(configuration);
 
-      // Añadir el stream local
+      // Add the local stream
       _localStream?.getTracks().forEach((track) {
         _peerConnection?.addTrack(track, _localStream!);
       });

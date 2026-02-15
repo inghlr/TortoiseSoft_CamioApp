@@ -348,11 +348,11 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  /// Helper para obtener la etiqueta del modo de tema
+  /// Helper to get the theme mode label
   String _getThemeModeLabel(ThemeMode mode) {
     switch (mode) {
       case ThemeMode.system:
-        return 'Usar configuración del sistema';
+        return 'Use system settings';
       case ThemeMode.light:
         return 'Tema claro';
       case ThemeMode.dark:

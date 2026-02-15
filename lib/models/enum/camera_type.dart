@@ -1,4 +1,4 @@
-/// Enumerador para tipos de cámara
+/// Enum for camera types
 enum CameraType {
   front('front'),
   back('back');

@@ -39,7 +39,7 @@ class CameraProvider extends ChangeNotifier {
       await cameraService.initRenderer();
       _config = await configService.getConfig();
 
-      // Obtener la IP local del dispositivo
+      // Get the device's local IP address
       _localIp = await networkService.getLocalIp();
 
       _statusMessage = 'Initialized';
@@ -64,7 +64,7 @@ class CameraProvider extends ChangeNotifier {
 
       await cameraService.startCameraStream(width, height, fps);
 
-      // Conectar a socket
+      // Connect to socket
       _statusMessage = 'Connecting to server...';
       notifyListeners();
 

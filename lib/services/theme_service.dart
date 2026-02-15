@@ -17,18 +17,18 @@ class ThemeService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  /// Obtiene el modo de tema guardado (0: system, 1: light, 2: dark)
+  /// Gets the saved theme mode (0: system, 1: light, 2: dark)
   ThemeMode getThemeMode() {
     final value = _prefs.getInt(_themeModeKey) ?? 0;
     return ThemeMode.values[value];
   }
 
-  /// Guarda el modo de tema
+  /// Saves the theme mode
   Future<void> setThemeMode(ThemeMode themeMode) async {
     await _prefs.setInt(_themeModeKey, themeMode.index);
   }
 
-  /// Obtiene si el tema es oscuro actualmente
+  /// Gets whether the theme is currently dark
   bool isDarkMode(Brightness brightness) {
     return brightness == Brightness.dark;
   }

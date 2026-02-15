@@ -79,11 +79,11 @@ class _AppInitializerState extends State<AppInitializer> {
   }
 
   Future<void> _initialize() async {
-    // Inicializar servicios
+    // Initialize services
     final configService = ConfigService();
     await configService.init();
 
-    // Esperar a que se completen todas las inicializaciones
+    // Wait for all initializations to complete
     await Future.delayed(const Duration(milliseconds: 500));
   }
 

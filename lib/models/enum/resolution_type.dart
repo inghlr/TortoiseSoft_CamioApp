@@ -1,4 +1,4 @@
-/// Enumerador para tipos de resolución de cámara
+/// Enum for camera resolution types
 enum ResolutionType {
   qvga('QVGA (320x240)', 320, 240),
   vga('VGA (640x480)', 640, 480),
