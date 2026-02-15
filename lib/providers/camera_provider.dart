@@ -119,19 +119,33 @@ class CameraProvider extends ChangeNotifier {
     }
   }
 
-  void updateConfig(AppConfig newConfig) {
+  Future<void> updateConfig(AppConfig newConfig) async {
     _config = newConfig;
-    configService.saveConfig(newConfig);
+    await configService.saveConfig(newConfig);
     notifyListeners();
   }
 
-  void updateResolution(ResolutionType resolution) {
+  Future<void> updateResolution(ResolutionType resolution) async {
     _config.selectedResolution = resolution;
+    await configService.saveConfig(_config);
     notifyListeners();
   }
 
-  void updateFps(FpsType fps) {
+  Future<void> updateFps(FpsType fps) async {
     _config.selectedFps = fps;
+    await configService.saveConfig(_config);
+    notifyListeners();
+  }
+
+  Future<void> updateSecureConnection(bool useSecure) async {
+    _config.useSecureConnection = useSecure;
+    await configService.saveConfig(_config);
+    notifyListeners();
+  }
+
+  Future<void> updatePassword(String? password) async {
+    _config.customPassword = password;
+    await configService.saveConfig(_config);
     notifyListeners();
   }
 

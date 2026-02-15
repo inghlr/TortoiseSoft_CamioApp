@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:provider/provider.dart';
 import '../providers/camera_provider.dart';
+import '../config/app_colors.dart';
 
 class CameraStreamPage extends StatelessWidget {
   const CameraStreamPage({Key? key}) : super(key: key);
@@ -70,7 +71,7 @@ class CameraStreamPage extends StatelessWidget {
                             heroTag: 'switch_camera',
                             mini: true,
                             onPressed: () => provider.switchCamera(),
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Color(AppColors.primary),
                             child: const Icon(Icons.flip_camera_android),
                           ),
                           const SizedBox(width: 12),
@@ -221,9 +222,9 @@ class CameraStreamPage extends StatelessWidget {
                                     Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: Colors.blue[900]?.withAlpha((0.3 * 255).round()),
+                                        color: Color(AppColors.primaryDark).withAlpha((0.3 * 255).round()),
                                         borderRadius: BorderRadius.circular(4),
-                                        border: Border.all(color: Colors.blue[300]!, width: 0.5),
+                                        border: Border.all(color: Color(AppColors.accent), width: 0.5),
                                       ),
                                       child: Text(
                                         'Usa esta información para conectar desde OBS o tu PC.',
@@ -238,9 +239,9 @@ class CameraStreamPage extends StatelessWidget {
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: const Text(
-                                      'Cerrar',
-                                      style: TextStyle(color: Colors.blue),
+                                      child: Text(
+                                        'Cerrar',
+                                        style: TextStyle(color: Color(AppColors.primary)),
                                     ),
                                   ),
                                 ],
@@ -251,7 +252,7 @@ class CameraStreamPage extends StatelessWidget {
                         child: Icon(
                           Icons.info_outline,
                           size: 16,
-                          color: Colors.blue[300],
+                          color: Color(AppColors.accent),
                         ),
                       ),
                     ],
@@ -273,7 +274,7 @@ class CameraStreamPage extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: Colors.blue[300],
+            color: Color(AppColors.accent),
             fontSize: 13,
             fontWeight: FontWeight.bold,
           ),

@@ -8,6 +8,7 @@ import 'services/camera_service.dart';
 import 'services/config_service.dart';
 import 'services/socket_service.dart';
 import 'services/theme_service.dart';
+import 'config/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,23 +37,58 @@ class CameraStreamerApp extends StatelessWidget {
             themeMode: themeProvider.themeMode,
             theme: ThemeData(
               brightness: Brightness.light,
-              primarySwatch: Colors.blue,
+              primaryColor: Color(AppColors.primary),
+              primarySwatch: Colors.cyan,
               useMaterial3: true,
+              scaffoldBackgroundColor: Color(AppColors.lightBackground),
               appBarTheme: AppBarTheme(
-                backgroundColor: Colors.blue[400],
+                backgroundColor: Color(AppColors.primary),
                 elevation: 0,
+                iconTheme: IconThemeData(color: Colors.white),
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Color(AppColors.primary),
+                foregroundColor: Colors.white,
+              ),
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(AppColors.primary),
+                  foregroundColor: Colors.white,
+                ),
               ),
             ),
             darkTheme: ThemeData(
               brightness: Brightness.dark,
-              primarySwatch: Colors.blue,
+              primaryColor: Color(AppColors.primary),
+              primarySwatch: Colors.cyan,
               useMaterial3: true,
-              scaffoldBackgroundColor: const Color(0xFF121212),
+              scaffoldBackgroundColor: Color(AppColors.darkBackground),
               appBarTheme: AppBarTheme(
-                backgroundColor: Colors.grey[900],
+                backgroundColor: Color(0xFF262626),
                 elevation: 0,
+                iconTheme: IconThemeData(color: Color(AppColors.primary)),
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              cardColor: Colors.grey[800],
+              cardColor: Color(0xFF2A2A2A),
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Color(AppColors.primary),
+                foregroundColor: Colors.white,
+              ),
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(AppColors.primary),
+                  foregroundColor: Colors.white,
+                ),
+              ),
             ),
             home: const AppInitializer(),
           );

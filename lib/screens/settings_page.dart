@@ -5,6 +5,7 @@ import '../models/enum/resolution_type.dart';
 import '../models/enum/fps_type.dart';
 import '../providers/camera_provider.dart';
 import '../providers/theme_provider.dart';
+import '../config/app_colors.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -117,9 +118,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       CheckboxListTile(
                         title: const Text('Use Secure Connection (HTTPS)'),
                         value: provider.config.useSecureConnection,
-                        onChanged: (value) {
-                          provider.config.useSecureConnection = value ?? true;
-                          setState(() {});
+                        onChanged: (value) async {
+                          await provider.updateSecureConnection(value ?? true);
                         },
                         contentPadding: EdgeInsets.zero,
                       ),
@@ -168,9 +168,9 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                             )
                             .toList(),
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           if (value != null) {
-                            provider.updateResolution(value);
+                            await provider.updateResolution(value);
                           }
                         },
                       ),
@@ -192,9 +192,9 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                             )
                             .toList(),
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           if (value != null) {
-                            provider.updateFps(value);
+                            await provider.updateFps(value);
                           }
                         },
                       ),
@@ -247,7 +247,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             size: 20,
                                             color: themeProvider.themeMode ==
                                                     ThemeMode.system
-                                                ? Colors.blue
+                                                ? Color(AppColors.primary)
                                                 : null,
                                           ),
                                           const SizedBox(width: 8),
@@ -264,7 +264,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             size: 20,
                                             color: themeProvider.themeMode ==
                                                     ThemeMode.light
-                                                ? Colors.blue
+                                                ? Color(AppColors.primary)
                                                 : null,
                                           ),
                                           const SizedBox(width: 8),
@@ -281,7 +281,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             size: 20,
                                             color: themeProvider.themeMode ==
                                                     ThemeMode.dark
-                                                ? Colors.blue
+                                                ? Color(AppColors.primary)
                                                 : null,
                                           ),
                                           const SizedBox(width: 8),
@@ -302,7 +302,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   final newConfig = AppConfig(
                     serverIp: _ipController.text,
                     serverPort: int.tryParse(_portController.text) ?? 8080,
@@ -318,16 +318,18 @@ class _SettingsPageState extends State<SettingsPage> {
                         : _passwordController.text,
                   );
 
-                  provider.updateConfig(newConfig);
+                  await provider.updateConfig(newConfig);
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Settings saved!'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Settings saved!'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
 
-                  Navigator.pop(context);
+                    Navigator.pop(context);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
