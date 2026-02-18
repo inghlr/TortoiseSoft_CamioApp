@@ -37,9 +37,17 @@ class CameraStreamerApp extends StatelessWidget {
             themeMode: themeProvider.themeMode,
             theme: ThemeData(
               brightness: Brightness.light,
-              primaryColor: Color(AppColors.primary),
-              primarySwatch: Colors.cyan,
               useMaterial3: true,
+              colorScheme: ColorScheme.light(
+                primary: Color(AppColors.primary),
+                secondary: Color(AppColors.accent),
+                surface: Color(AppColors.alabasterGrey),
+                onPrimary: Colors.white,
+                onSecondary: Color(AppColors.charcoalBlue),
+                onSurface: Color(AppColors.charcoalBlue),
+                error: Color(AppColors.error),
+                onError: Colors.white,
+              ),
               scaffoldBackgroundColor: Color(AppColors.lightBackground),
               appBarTheme: AppBarTheme(
                 backgroundColor: Color(AppColors.primary),
@@ -64,12 +72,20 @@ class CameraStreamerApp extends StatelessWidget {
             ),
             darkTheme: ThemeData(
               brightness: Brightness.dark,
-              primaryColor: Color(AppColors.primary),
-              primarySwatch: Colors.cyan,
               useMaterial3: true,
+              colorScheme: ColorScheme.dark(
+                primary: Color(AppColors.primary),
+                secondary: Color(AppColors.accent),
+                surface: Color(AppColors.charcoalBlue),
+                onPrimary: Colors.white,
+                onSecondary: Color(AppColors.carbonBlack),
+                onSurface: Color(AppColors.alabasterGrey),
+                error: Color(AppColors.error),
+                onError: Colors.white,
+              ),
               scaffoldBackgroundColor: Color(AppColors.darkBackground),
               appBarTheme: AppBarTheme(
-                backgroundColor: Color(0xFF262626),
+                backgroundColor: Color(AppColors.charcoalBlue),
                 elevation: 0,
                 iconTheme: IconThemeData(color: Color(AppColors.primary)),
                 titleTextStyle: TextStyle(
@@ -78,7 +94,7 @@ class CameraStreamerApp extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              cardColor: Color(0xFF2A2A2A),
+              cardColor: Color(AppColors.charcoalBlue),
               floatingActionButtonTheme: FloatingActionButtonThemeData(
                 backgroundColor: Color(AppColors.primary),
                 foregroundColor: Colors.white,

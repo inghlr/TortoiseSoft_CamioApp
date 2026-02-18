@@ -14,7 +14,7 @@ class AppConfig {
   String? customPassword;
 
   AppConfig({
-    this.serverIp = '192.168.1.100',
+    this.serverIp = '192.168.1.9',
     this.serverPort = 5000,
     this.deviceName = 'My Phone Camera',
     this.selectedCamera = CameraType.front,

@@ -4,17 +4,32 @@
 /// Colors are stored as 32-bit integer values in ARGB format for consistency
 /// and can be easily converted to Flutter Color objects.
 class AppColors {
-  /// Primary brand color (Cyan/Turquoise)
+  /// Palette: Alabaster Grey
+  static const int alabasterGrey = 0xFFD8DBE2;
+
+  /// Palette: Powder Blue
+  static const int powderBlue = 0xFFA9BCD0;
+
+  /// Palette: Pacific Blue
+  static const int pacificBlue = 0xFF58A4B0;
+
+  /// Palette: Charcoal Blue
+  static const int charcoalBlue = 0xFF373F51;
+
+  /// Palette: Carbon Black
+  static const int carbonBlack = 0xFF1B1B1E;
+
+  /// Primary brand color
   /// Used for primary UI elements like buttons, links, and highlights
-  static const int primary = 0xFF00BCD4;
+  static const int primary = pacificBlue;
 
   /// Dark variant of primary color
   /// Used for pressed states and darker backgrounds
-  static const int primaryDark = 0xFF00838F;
+  static const int primaryDark = charcoalBlue;
 
-  /// Accent color (Light Cyan)
+  /// Accent color
   /// Used for secondary actions and highlights
-  static const int accent = 0xFFB2EBF2;
+  static const int accent = powderBlue;
 
   /// Error color (Red)
   /// Used for error messages, warnings, and invalid inputs
@@ -29,14 +44,14 @@ class AppColors {
   static const int success = 0xFF00796B;
 
   /// Light background color
-  static const int lightBackground = 0xFFF5F5F5;
+  static const int lightBackground = alabasterGrey;
 
   /// Dark background color
-  static const int darkBackground = 0xFF1A1A1A;
+  static const int darkBackground = carbonBlack;
 
-  /// Neutral gray for secondary elements
-  static const int neutralGray = 0xFF9E9E9E;
+  /// Neutral color for secondary elements
+  static const int neutralGray = powderBlue;
 
-  /// Dark gray for text and icons
-  static const int darkGray = 0xFF424242;
+  /// Dark color for text and icons
+  static const int darkGray = charcoalBlue;
 }
