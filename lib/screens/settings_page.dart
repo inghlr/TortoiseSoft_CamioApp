@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/app_config.dart';
 import '../models/enum/resolution_type.dart';
 import '../models/enum/fps_type.dart';
+import '../providers/auth_provider.dart';
 import '../providers/camera_provider.dart';
 import '../providers/theme_provider.dart';
 import '../config/app_colors.dart';
@@ -27,9 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _deviceNameController = TextEditingController(
       text: provider.config.deviceName,
     );
-    _ipController = TextEditingController(
-      text: provider.config.serverIp,
-    );
+    _ipController = TextEditingController(text: provider.config.serverIp);
     _portController = TextEditingController(
       text: provider.config.serverPort.toString(),
     );
@@ -50,9 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: Consumer<CameraProvider>(
         builder: (context, provider, _) {
           return ListView(
@@ -227,10 +224,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                   _getThemeModeLabel(themeProvider.themeMode),
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.color,
+                                    color: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall?.color,
                                   ),
                                 ),
                                 trailing: PopupMenuButton<ThemeMode>(
@@ -245,7 +241,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                           Icon(
                                             Icons.brightness_auto,
                                             size: 20,
-                                            color: themeProvider.themeMode ==
+                                            color:
+                                                themeProvider.themeMode ==
                                                     ThemeMode.system
                                                 ? Color(AppColors.primary)
                                                 : null,
@@ -262,7 +259,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                           Icon(
                                             Icons.brightness_7,
                                             size: 20,
-                                            color: themeProvider.themeMode ==
+                                            color:
+                                                themeProvider.themeMode ==
                                                     ThemeMode.light
                                                 ? Color(AppColors.primary)
                                                 : null,
@@ -279,7 +277,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                           Icon(
                                             Icons.brightness_4,
                                             size: 20,
-                                            color: themeProvider.themeMode ==
+                                            color:
+                                                themeProvider.themeMode ==
                                                     ThemeMode.dark
                                                 ? Color(AppColors.primary)
                                                 : null,
@@ -308,11 +307,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     serverPort: int.tryParse(_portController.text) ?? 8080,
                     deviceName: _deviceNameController.text,
                     selectedCamera: provider.config.selectedCamera,
-                    selectedResolution:
-                        provider.config.selectedResolution,
+                    selectedResolution: provider.config.selectedResolution,
                     selectedFps: provider.config.selectedFps,
-                    useSecureConnection:
-                        provider.config.useSecureConnection,
+                    useSecureConnection: provider.config.useSecureConnection,
                     customPassword: _passwordController.text.isEmpty
                         ? null
                         : _passwordController.text,
@@ -337,11 +334,24 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 child: const Text(
                   'Save Settings',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: () async {
+                  final authProvider = context.read<AuthProvider>();
+                  if (provider.isStreaming) {
+                    await provider.stopStreaming();
+                  }
+
+                  await authProvider.logout();
+                  if (mounted) {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  }
+                },
+                icon: const Icon(Icons.logout),
+                label: const Text('Log out'),
               ),
             ],
           );

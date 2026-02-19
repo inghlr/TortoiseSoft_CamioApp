@@ -5,27 +5,24 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_caminout_app/main.dart';
+import 'package:flutter_caminout_app/services/auth_service.dart';
 import 'package:flutter_caminout_app/services/theme_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('App shows auth screen when no active session', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
     final themeService = ThemeService();
-    await tester.pumpWidget(CameraStreamerApp(themeService: themeService));
+    await themeService.init();
+    await tester.pumpWidget(
+      CameraStreamerApp(themeService: themeService, authService: AuthService()),
+    );
+    await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Caminout'), findsOneWidget);
   });
 }

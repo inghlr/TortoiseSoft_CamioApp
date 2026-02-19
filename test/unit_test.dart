@@ -7,7 +7,9 @@ import 'package:flutter_caminout_app/services/camera_service.dart';
 import 'package:flutter_caminout_app/services/config_service.dart';
 import 'package:flutter_caminout_app/services/socket_service.dart';
 import 'package:flutter_caminout_app/services/theme_service.dart';
+import 'package:flutter_caminout_app/services/auth_service.dart';
 import 'package:flutter_caminout_app/providers/camera_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('Camera Streamer App Tests', () {
@@ -150,13 +152,19 @@ void main() {
   });
 
   group('Integration Tests', () {
-    testWidgets(
-      'CameraStreamerApp should render without errors',
-      (WidgetTester tester) async {
-        final themeService = ThemeService();
-        await tester.pumpWidget(CameraStreamerApp(themeService: themeService));
-        expect(find.byType(CameraStreamerApp), findsOneWidget);
-      },
-    );
+    testWidgets('CameraStreamerApp should render without errors', (
+      WidgetTester tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final themeService = ThemeService();
+      await themeService.init();
+      await tester.pumpWidget(
+        CameraStreamerApp(
+          themeService: themeService,
+          authService: AuthService(),
+        ),
+      );
+      expect(find.byType(CameraStreamerApp), findsOneWidget);
+    });
   });
 }

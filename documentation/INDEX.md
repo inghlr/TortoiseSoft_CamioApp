@@ -502,3 +502,8 @@ La aplicación está **completamente funcional** y lista para:
 ═════════════════════════════════════════════════════════════════
 
 ¡Gracias por usar **Camera Streamer App**! 🚀📱
+
+## Authentication Update
+
+New auth module documentation: AUTH_IMPLEMENTATION.md.
+

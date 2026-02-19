@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
 import 'providers/camera_provider.dart';
 import 'providers/theme_provider.dart';
+import 'screens/auth_page.dart';
 import 'screens/camera_stream_page.dart';
 import 'screens/settings_page.dart';
+import 'services/auth_service.dart';
 import 'services/camera_service.dart';
 import 'services/config_service.dart';
 import 'services/socket_service.dart';
@@ -14,23 +17,34 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final themeService = ThemeService();
   await themeService.init();
-  runApp(CameraStreamerApp(themeService: themeService));
+  runApp(
+    CameraStreamerApp(themeService: themeService, authService: AuthService()),
+  );
 }
 
 class CameraStreamerApp extends StatelessWidget {
   final ThemeService themeService;
+  final AuthService authService;
 
   const CameraStreamerApp({
     Key? key,
     required this.themeService,
+    required this.authService,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ThemeProvider(themeService: themeService),
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, _) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(themeService: themeService),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(authService: authService)..initialize(),
+        ),
+      ],
+      child: Consumer2<ThemeProvider, AuthProvider>(
+        builder: (context, themeProvider, authProvider, _) {
           return MaterialApp(
             title: 'Camera Streamer',
             debugShowCheckedModeBanner: false,
@@ -106,10 +120,45 @@ class CameraStreamerApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: const AppInitializer(),
+            home: const RootPage(),
           );
         },
       ),
+    );
+  }
+}
+
+class RootPage extends StatelessWidget {
+  const RootPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, _) {
+        if (!authProvider.isInitialized) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading session...',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        if (!authProvider.isAuthenticated) {
+          return const AuthPage();
+        }
+
+        return const AppInitializer();
+      },
     );
   }
 }
@@ -173,9 +222,7 @@ class _AppInitializerState extends State<AppInitializer> {
         return MultiProvider(
           providers: [
             Provider<CameraService>(create: (_) => CameraService()),
-            Provider<ConfigService>(
-              create: (_) => ConfigService(),
-            ),
+            Provider<ConfigService>(create: (_) => ConfigService()),
             Provider<SocketService>(create: (_) => SocketService()),
             ChangeNotifierProvider(
               create: (context) => CameraProvider(
@@ -201,13 +248,9 @@ class CameraStreamerHome extends StatelessWidget {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/settings':
-            return MaterialPageRoute(
-              builder: (_) => const SettingsPage(),
-            );
+            return MaterialPageRoute(builder: (_) => const SettingsPage());
           default:
-            return MaterialPageRoute(
-              builder: (_) => const CameraStreamPage(),
-            );
+            return MaterialPageRoute(builder: (_) => const CameraStreamPage());
         }
       },
     );
