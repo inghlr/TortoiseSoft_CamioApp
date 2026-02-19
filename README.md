@@ -71,11 +71,11 @@ flutter build ios --release   # iOS
 
 ## 📖 Documentación
 
-- 📋 **[SETUP.md](SETUP.md)** - Instalación detallada y troubleshooting
-- 🏗️ **[ARCHITECTURE.md](ARCHITECTURE.md)** - Arquitectura de la aplicación
-- 🖥️ **[BACKEND_GUIDE.md](BACKEND_GUIDE.md)** - Guía de implementación del servidor .NET
-- 🔐 **[ANDROID_PERMISSIONS.md](ANDROID_PERMISSIONS.md)** - Configuración de permisos Android
-- 🍎 **[IOS_PERMISSIONS.md](IOS_PERMISSIONS.md)** - Configuración de permisos iOS
+- 📋 **[SETUP.md](documents/SETUP.md)** - Instalación detallada y troubleshooting
+- 🏗️ **[ARCHITECTURE.md](documents/ARCHITECTURE.md)** - Arquitectura de la aplicación
+- 🖥️ **[BACKEND_GUIDE.md](documents/BACKEND_GUIDE.md)** - Guía de implementación del servidor .NET
+- 🔐 **[ANDROID_PERMISSIONS.md](documents/ANDROID_PERMISSIONS.md)** - Configuración de permisos Android
+- 🍎 **[IOS_PERMISSIONS.md](documents/IOS_PERMISSIONS.md)** - Configuración de permisos iOS
 
 ## 🏗️ Estructura del Proyecto
 
@@ -146,10 +146,10 @@ dotnet new console -n CameraStreamerServer
 cd CameraStreamerServer
 dotnet add package SocketIOSharp
 dotnet add package WebSocketSharp
-// ... Implementar según BACKEND_GUIDE.md
+// ... Implementar según documents/BACKEND_GUIDE.md
 ```
 
-Ver [BACKEND_GUIDE.md](BACKEND_GUIDE.md) para instrucciones completas.
+Ver [BACKEND_GUIDE.md](documents/BACKEND_GUIDE.md) para instrucciones completas.
 
 ## 🔐 Seguridad
 
@@ -278,3 +278,4 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
