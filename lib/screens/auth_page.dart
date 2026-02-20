@@ -43,6 +43,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, _) {
+        _maybeShowErrorToast(context, authProvider);
         if (authProvider.hasPendingOtpVerification &&
             _currentView != AuthView.otp) {
           _currentView = AuthView.otp;
@@ -79,10 +80,6 @@ class _AuthPageState extends State<AuthPage> {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 20),
-                          if (authProvider.errorMessage != null)
-                            _ErrorBanner(message: authProvider.errorMessage!),
-                          if (authProvider.errorMessage != null)
-                            const SizedBox(height: 12),
                           if (_currentView == AuthView.login)
                             _buildLoginForm(context, authProvider),
                           if (_currentView == AuthView.register)
@@ -401,6 +398,15 @@ class _AuthPageState extends State<AuthPage> {
       context,
     ).showSnackBar(SnackBar(content: Text(message)));
   }
+
+  void _maybeShowErrorToast(BuildContext context, AuthProvider authProvider) {
+    final message = authProvider.errorMessage;
+    if (message == null || message.isEmpty) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showSnackBar(context, message);
+      authProvider.clearError();
+    });
+  }
 }
 
 class _SocialLoginButton extends StatelessWidget {
@@ -420,25 +426,6 @@ class _SocialLoginButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(icon),
       label: Text(label),
-    );
-  }
-}
-
-class _ErrorBanner extends StatelessWidget {
-  final String message;
-
-  const _ErrorBanner({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.red.withAlpha((0.15 * 255).round()),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.red),
-      ),
-      child: Text(message, style: const TextStyle(color: Colors.red)),
     );
   }
 }

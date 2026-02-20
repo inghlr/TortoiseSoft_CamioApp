@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 
 /// Loads environment variables from a .env file at project root.
 /// Only the needed keys are parsed to keep it lightweight.
@@ -15,37 +16,33 @@ class EnvService {
   bool hasUserRequired = false;
 
   Future<void> load() async {
-    final file = await _resolveEnvFile();
-
+    final lines = await _readEnvLines();
     String? domainPart;
     String? portPart;
 
-    if (file != null) {
-      final lines = await file.readAsLines();
-      for (final raw in lines) {
-        final line = raw.trim();
-        if (line.isEmpty || line.startsWith('#')) continue;
-        final idx = line.indexOf('=');
-        if (idx <= 0) continue;
-        final key = line.substring(0, idx).trim();
-        final value = line.substring(idx + 1).trim();
+    for (final raw in lines) {
+      final line = raw.trim();
+      if (line.isEmpty || line.startsWith('#')) continue;
+      final idx = line.indexOf('=');
+      if (idx <= 0) continue;
+      final key = line.substring(0, idx).trim();
+      final value = line.substring(idx + 1).trim();
 
-        switch (key.toUpperCase()) {
-          case 'API_DOMAIN':
-            if (value.isNotEmpty) apiDomain = value;
-            break;
-          case 'DOMAIN':
-            if (value.isNotEmpty) domainPart = value;
-            break;
-          case 'PORT':
-            if (value.isNotEmpty) portPart = value;
-            break;
-          case 'HAS_USER_REQUIRED':
-            hasUserRequired = value.toLowerCase() == 'true';
-            break;
-          default:
-            break;
-        }
+      switch (key.toUpperCase()) {
+        case 'API_DOMAIN':
+          if (value.isNotEmpty) apiDomain = value;
+          break;
+        case 'DOMAIN':
+          if (value.isNotEmpty) domainPart = value;
+          break;
+        case 'PORT':
+          if (value.isNotEmpty) portPart = value;
+          break;
+        case 'HAS_USER_REQUIRED':
+          hasUserRequired = value.toLowerCase() == 'true';
+          break;
+        default:
+          break;
       }
     }
 
@@ -77,5 +74,20 @@ class EnvService {
     final primary = File('.env');
     if (await primary.exists()) return primary;
     return null;
+  }
+
+  /// Returns env lines either from file system or bundled asset.
+  Future<List<String>> _readEnvLines() async {
+    final file = await _resolveEnvFile();
+    if (file != null) {
+      return file.readAsLines();
+    }
+
+    try {
+      final content = await rootBundle.loadString('.env');
+      return content.split('\n');
+    } catch (_) {
+      return const <String>[];
+    }
   }
 }

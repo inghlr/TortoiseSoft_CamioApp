@@ -149,7 +149,17 @@ class AuthService {
       throw Exception(_extractMessage(body));
     }
 
-    final token = (body['token'] ?? body['access_token'] ?? '').toString();
+    final data = body['data'] is Map<String, dynamic>
+        ? body['data'] as Map<String, dynamic>
+        : <String, dynamic>{};
+
+    final token =
+        (data['token'] ??
+                body['token'] ??
+                body['access_token'] ??
+                data['access_token'] ??
+                '')
+            .toString();
     if (token.isEmpty) {
       throw const FormatException('Token not present in auth response');
     }
@@ -158,12 +168,26 @@ class AuthService {
         ? body['user'] as Map<String, dynamic>
         : <String, dynamic>{};
 
+    final dataUserId = data['userId'] ?? data['user_id'];
+    final dataEmail = data['email'] ?? data['username'];
+
     return AuthSession(
       token: token,
-      userId: (body['user_id'] ?? user['id'] ?? 'unknown').toString(),
-      displayName: (user['name'] ?? body['name'] ?? fallbackName).toString(),
-      loginType: (body['login_type'] ?? body['provider'] ?? 'password')
+      userId: (dataUserId ?? body['user_id'] ?? user['id'] ?? 'unknown')
           .toString(),
+      displayName:
+          (user['name'] ??
+                  dataEmail ??
+                  body['name'] ??
+                  body['email'] ??
+                  fallbackName)
+              .toString(),
+      loginType:
+          (body['login_type'] ??
+                  data['login_type'] ??
+                  body['provider'] ??
+                  'password')
+              .toString(),
     );
   }
 
