@@ -6,30 +6,41 @@ import 'providers/theme_provider.dart';
 import 'screens/auth_page.dart';
 import 'screens/camera_stream_page.dart';
 import 'screens/settings_page.dart';
+import 'services/env_service.dart';
 import 'services/auth_service.dart';
 import 'services/camera_service.dart';
 import 'services/config_service.dart';
 import 'services/socket_service.dart';
 import 'services/theme_service.dart';
 import 'config/app_colors.dart';
+import 'config/api_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final envService = EnvService();
+  await envService.load();
+  ApiConstants.setDomain(envService.apiDomain);
   final themeService = ThemeService();
   await themeService.init();
   runApp(
-    CameraStreamerApp(themeService: themeService, authService: AuthService()),
+    CameraStreamerApp(
+      themeService: themeService,
+      authService: AuthService(),
+      envService: envService,
+    ),
   );
 }
 
 class CameraStreamerApp extends StatelessWidget {
   final ThemeService themeService;
   final AuthService authService;
+  final EnvService envService;
 
   const CameraStreamerApp({
     Key? key,
     required this.themeService,
     required this.authService,
+    required this.envService,
   }) : super(key: key);
 
   @override
@@ -40,7 +51,9 @@ class CameraStreamerApp extends StatelessWidget {
           create: (_) => ThemeProvider(themeService: themeService),
         ),
         ChangeNotifierProvider(
-          create: (_) => AuthProvider(authService: authService)..initialize(),
+          create: (_) =>
+              AuthProvider(authService: authService, envService: envService)
+                ..initialize(),
         ),
       ],
       child: Consumer2<ThemeProvider, AuthProvider>(

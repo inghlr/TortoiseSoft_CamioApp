@@ -21,8 +21,8 @@ class AppConstants {
   /// Default server IP address (192.168.1.100)
   static const String defaultServerIp = '192.168.1.100';
 
-  /// Default server port (8080)
-  static const int defaultServerPort = 8080;
+  /// Default server port (5050)
+  static const int defaultServerPort = 5050;
 
   /// Default secure connection setting (HTTPS/WSS enabled)
   static const bool defaultUseSecureConnection = true;

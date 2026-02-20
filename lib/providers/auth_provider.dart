@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import '../models/auth_session.dart';
 import '../models/register_request.dart';
 import '../services/auth_service.dart';
+import '../services/env_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService authService;
+  final EnvService envService;
 
   AuthSession? _session;
   bool _isLoading = false;
@@ -13,7 +15,7 @@ class AuthProvider extends ChangeNotifier {
   String? _pendingRegistrationId;
   String? _pendingPhoneNumber;
 
-  AuthProvider({required this.authService});
+  AuthProvider({required this.authService, required this.envService});
 
   AuthSession? get session => _session;
   bool get isLoading => _isLoading;
@@ -44,17 +46,31 @@ class AuthProvider extends ChangeNotifier {
     required String password,
   }) async {
     return _runAuthAction(() async {
-      final session = kDebugMode
-          ? AuthSession(
-              token: 'debug-token',
-              userId: 'debug-user',
-              displayName: identifier.isEmpty ? 'Debug User' : identifier,
-              loginType: 'debug',
-            )
-          : await authService.loginWithCredentials(
-              identifier: identifier,
-              password: password,
-            );
+      if (kDebugMode && !envService.hasUserRequired) {
+        final debugSession = AuthSession(
+          token: 'debug-token',
+          userId: 'debug-user',
+          displayName: identifier.isEmpty ? 'Debug User' : identifier,
+          loginType: 'debug',
+        );
+        _session = debugSession;
+        await authService.saveSession(debugSession);
+        _pendingRegistrationId = null;
+        _pendingPhoneNumber = null;
+        return;
+      }
+
+      final effectiveIdentifier = kDebugMode && envService.hasUserRequired
+          ? 'admin@mail.com'
+          : identifier;
+      final effectivePassword = kDebugMode && envService.hasUserRequired
+          ? 'admin'
+          : password;
+
+      final session = await authService.loginWithCredentials(
+        identifier: effectiveIdentifier,
+        password: effectivePassword,
+      );
       _session = session;
       await authService.saveSession(session);
       _pendingRegistrationId = null;
