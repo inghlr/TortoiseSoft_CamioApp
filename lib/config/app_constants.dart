@@ -4,9 +4,6 @@
 /// including socket connection timeouts, default configuration values,
 /// port limits, and STUN servers for WebRTC connectivity.
 class AppConstants {
-  /// Authentication API URL for credentials and social login
-  static const String url = 'https://api.caminout.com/login';
-
   // Timeout durations
   /// Socket connection timeout duration (10 seconds)
   static const Duration socketConnectionTimeout = Duration(seconds: 10);

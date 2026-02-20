@@ -17,24 +17,21 @@ This document describes the authentication module added to the Flutter app.
 
 ## API configuration
 
-Base authentication URL is configurable in:
+API domain and endpoints are centralized in:
 
-- `lib/config/app_constants.dart`
+- `lib/config/api_constants.dart`
 
 ```dart
-static const String url = 'https://api.caminout.com/login';
+static const String domain = 'localhost:3000';
+static const String baseUrl = 'http://$domain';
+static const String register = '$baseUrl/api/auth/register';
+static const String login = '$baseUrl/api/auth/login';
+static const String profile = '$baseUrl/api/auth/profile';
+static const String otpRequest = '$baseUrl/api/auth/otp/request';
+static const String otpVerify = '$baseUrl/api/auth/otp/verify';
 ```
 
-The auth service uses this URL and derives related endpoints:
-
-- Login: `POST {url}`
-- Register: `POST /register` (derived from `/login`)
-- OTP request: `POST /register/otp`
-- OTP verify: `POST /register/verify-otp`
-
-Implementation:
-
-- `lib/services/auth_service.dart`
+AuthService consumes these endpoints for login, register, profile (GET), and OTP flows.
 
 ## New architecture components
 

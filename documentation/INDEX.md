@@ -505,5 +505,5 @@ La aplicación está **completamente funcional** y lista para:
 
 ## Authentication Update
 
-New auth module documentation: AUTH_IMPLEMENTATION.md.
+New auth module documentation: AUTH_IMPLEMENTATION.md (includes API constants, domain, and endpoints).
 

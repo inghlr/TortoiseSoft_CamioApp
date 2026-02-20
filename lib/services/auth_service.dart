@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../config/app_constants.dart';
+import '../config/api_constants.dart';
 import '../models/auth_session.dart';
 import '../models/register_request.dart';
 
 class AuthService {
   static const String _sessionKey = 'auth_session';
-  final String url;
   final http.Client _httpClient;
   SharedPreferences? _prefs;
 
-  AuthService({this.url = AppConstants.url, http.Client? httpClient})
+  AuthService({http.Client? httpClient})
     : _httpClient = httpClient ?? http.Client();
 
   Future<void> init() async {
@@ -49,7 +48,7 @@ class AuthService {
     required String password,
   }) async {
     final response = await _httpClient.post(
-      Uri.parse(url),
+      Uri.parse(ApiConstants.login),
       headers: _jsonHeaders,
       body: jsonEncode(<String, dynamic>{
         'identifier': identifier,
@@ -65,7 +64,7 @@ class AuthService {
     String? accessToken,
   }) async {
     final response = await _httpClient.post(
-      Uri.parse(url),
+      Uri.parse(ApiConstants.login),
       headers: _jsonHeaders,
       body: jsonEncode(<String, dynamic>{
         'provider': provider,
@@ -79,7 +78,7 @@ class AuthService {
 
   Future<String> register(RegisterRequest request) async {
     final response = await _httpClient.post(
-      _registerUrl,
+      Uri.parse(ApiConstants.register),
       headers: _jsonHeaders,
       body: jsonEncode(request.toJson()),
     );
@@ -98,7 +97,7 @@ class AuthService {
 
   Future<void> requestOtp({required String registrationId}) async {
     final response = await _httpClient.post(
-      _requestOtpUrl,
+      Uri.parse(ApiConstants.otpRequest),
       headers: _jsonHeaders,
       body: jsonEncode(<String, dynamic>{'registration_id': registrationId}),
     );
@@ -114,7 +113,7 @@ class AuthService {
     required String otp,
   }) async {
     final response = await _httpClient.post(
-      _verifyOtpUrl,
+      Uri.parse(ApiConstants.otpVerify),
       headers: _jsonHeaders,
       body: jsonEncode(<String, dynamic>{
         'registration_id': registrationId,
@@ -123,6 +122,22 @@ class AuthService {
     );
 
     return _parseSessionResponse(response, fallbackName: 'New user');
+  }
+
+  Future<Map<String, dynamic>> getProfile({required String token}) async {
+    final response = await _httpClient.get(
+      Uri.parse(ApiConstants.profile),
+      headers: <String, String>{
+        ..._jsonHeaders,
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final body = _decodeBody(response);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw Exception(_extractMessage(body));
+    }
+    return body;
   }
 
   AuthSession _parseSessionResponse(
@@ -178,26 +193,5 @@ class AuthService {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
-  }
-
-  Uri get _registerUrl {
-    return _replacePathSuffix('/register');
-  }
-
-  Uri get _requestOtpUrl {
-    return _replacePathSuffix('/register/otp');
-  }
-
-  Uri get _verifyOtpUrl {
-    return _replacePathSuffix('/register/verify-otp');
-  }
-
-  Uri _replacePathSuffix(String suffix) {
-    final parsed = Uri.parse(url);
-    final path = parsed.path.endsWith('/login')
-        ? parsed.path.replaceFirst(RegExp('/login\$'), suffix)
-        : suffix;
-
-    return parsed.replace(path: path);
   }
 }
